@@ -1,5 +1,15 @@
 const request = require('supertest');
 const app =require('../src/app')
+const {mongoConnect, mongoDisconnect} = require('../src/services/mongo');
+
+describe('Launches API',()=>{
+    beforeAll(async ()=>{
+        await mongoConnect()
+    })
+
+    afterAll(async ()=>{
+        await mongoDisconnect();
+    })
 
 describe ('Test GET /launches',() =>{
 test('It should respond with 200 success', async () => {
@@ -11,21 +21,21 @@ describe( 'Test POST /launch', () => {
     const launchData ={
         mission:'Test mission',
         rocket:'test rocket',
-        target:'test target',
+        target: 'Kepler-442 b',
         launchDate:'January 20, 2025'
     }
 
     const launchDataNoDate= {
         mission:'Test mission',
         rocket:'test rocket',
-        target:'test target',
+        target: 'Kepler-442 b',
     
     }
 
     const launchDataInvalidDate={
         mission:'Test mission',
         rocket:'test rocket',
-        target:'test target',
+        target: 'Kepler-442 b',
         launchDate:'Sand'
     }
 
@@ -57,4 +67,6 @@ expect(response.body).toStrictEqual({
     error:'Inavlid Launch Date'
 })
 });
+});
+
 });
